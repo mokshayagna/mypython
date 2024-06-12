@@ -1,0 +1,7 @@
+name,fullname,uid,gid,mobile,home,address,email,enabled
+sudheer,Sudheer Kumar,1507,1001,7676807475,9490681223,Hosa Road,sudhir.april09@gmail.com,enabled
+bhagavan,Bhagavan Prasad,1000,1001,9902096750,,Bommanahalli,,enabled
+mayuri,P Mayuri,1508,1001,9902369277,0000000000,BTM Layout,mayurireddy86@gmail.com,enabled
+parvathi,Duggi Parvathi,1512,1001,9620791113,9491940156,Virathanagara,dparvathi54@gmail.com,enabled
+kalyan,Kalyan Tej,1514,1001,8951177217,9948953809,Bommanahalli,geniuskalyan1@gmail.com,enabled
+Lavanya,Lavanya D,1234,1000,789067576,08563333456,Chittoor,lavanya@aura.com,enabledimport csv
