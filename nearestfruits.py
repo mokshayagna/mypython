@@ -2,6 +2,7 @@ import csv
 
 def dump_data_from_csv(filename):
     data_dict = {}
+    print(data_dict)
     with open(filename, 'r') as csvfile:
         csvreader = csv.reader(csvfile)
         next(csvreader)  
