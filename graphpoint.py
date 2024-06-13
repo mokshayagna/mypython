@@ -48,7 +48,7 @@ def main():
     nearest_points = find_nearest_points(distances)
     print("The nearest points are:", nearest_points)
 
-    # Example usage of get_distance_between_points function
+
     point1 = (1, 2)
     point2 = (4, 6)
     distance = distance_between_points(distances, point1, point2)
