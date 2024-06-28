@@ -2,7 +2,6 @@ import csv
 
 def dump_data_from_csv(filename):
     data_dict = {}
-    print(data_dict)
     with open(filename, 'r') as csvfile:
         csvreader = csv.reader(csvfile)
         next(csvreader)  
@@ -11,24 +10,33 @@ def dump_data_from_csv(filename):
                 fruit_name = row[0]
                 colour = int(row[1])
                 sweet = int(row[2])
-                data_dict[fruit_name] = (colour, sweet)
+                data_dict[fruit_name] = {'Colour': colour, 'Sweet': sweet}
             
     return data_dict
 
-def nearest_fruit(fruits_dict, given_fruit):
-    if given_fruit in fruits_dict:
-        print(f"Nearest fruit to {given_fruit}: Colour={fruits_dict[given_fruit][0]}, Sweet={fruits_dict[given_fruit][1]}")
-    
+
+def nearest_fruits(data,given_fruit,attribute):
+    if given_fruit in data:
+        value = data[given_fruit][attribute]
+        print(f"The attribute value of {given_fruit} is: {value}")
+        targeted_value = value + 1
+        for fruit, attributes in data.items():
+            if attributes['Colour'] == targeted_value:
+                print(f"The fruit with attribute value {targeted_value} is: {fruit}")
+        targeted_value = value - 1
+        for fruit, attributes in data.items():
+            if attributes['Colour'] == targeted_value:
+                print(f"The fruit with attribute value {targeted_value} is: {fruit}")
+
 
 def main():
-    filename = 'fruits.csv'
-    fruits_dict = dump_data_from_csv(filename)
-    given_fruit = 'mango'
-    
-    for fruit, ratings in fruits_dict.items():
-        print(f"Fruit: {fruit}, Colour: {ratings[0]}, Sweet: {ratings[1]}")
-    
-    nearest_fruit(fruits_dict, given_fruit)
+    filename = 'fruits.csv'  
+    data = dump_data_from_csv(filename)
+    print(data)
+    given_fruit = 'Mango'
+   # nearest_fruits(data,given_fruit,'Sweet')
+    nearest_fruits(data,given_fruit,'Colour')
+
 
 if __name__ == "__main__":
     main()

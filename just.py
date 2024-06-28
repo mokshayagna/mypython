@@ -1,64 +1,101 @@
+import pandas as pd
 import math
-import csv
 
+attributes = ["Red", "Yellow", "Green", "Sweet", "Sour", "Bitter"]
 
-def dump_data_from_csv_file(filename):
-    data_list = []
-    with open(filename, 'rt') as fd:
-        fdata = csv.reader(fd)
-        next(fdata)
-        for i in fdata:
-            points = (int(i[0]), int(i[1]))
-            data_list.append(points)
-    return (data_list)
-            #print(point)
+fruit_attributes = {
+    "Apple": ["Red", "Sweet"],
+    "Banana": ["Yellow", "Sweet"],
+    "Cherry": ["Red", "Sweet", "Sour"],
+    "Grapes": ["Green", "Sweet", "Sour"]
+}
 
+def generate_embeddings(fruits, attrs):
+    embeddings = {}
+    for fruit, attr_list in fruits.items():
+        embedding = [1 if attr in attr_list else 0 for attr in attrs]
+        embeddings[fruit] = embedding
+        print(fruit,embeddings)
+    return embeddings
 
-def calculating_distance(points):
-    distances = {}
-    for i in range(0,len(points)):
-        x1, y1 = points[i]
-        #print(x1,y1)
-        print('') 
-        for j in range(i+1, len(points)):  
-            x2, y2 = points[j]
-           # print(x2 ,y2)
-            distance = math.sqrt((x2 - x1)**2 + (y2 - y1)**2)
-            distances[((x1, y1), (x2, y2))] = distance
-           # print(((x1,y1),(x2,y2)), distance)
-    return(distances)
+def finding_fruit(embeddings, required_fruit):
+    matching_fruits = []
+    for fruit, embedding in embeddings.items():
+        if embedding == required_fruit:
+            matching_fruits.append(fruit)
+    return matching_fruits
 
+def euclidean_distance(embedding1, embedding2):
+    sum_of_difference = 0
+    for i in range (len(embedding1)):
+        sum_of_difference = sum_of_difference + (embedding1[i] - embedding2[i]) **2
+    return math.sqrt(sum_of_difference)
 
-def find_nearest_points(distances):
-    sorted_distances = sorted(distances.items(), key=lambda item: item[1])
-    nearest_points = sorted_distances[0][0] 
-    return nearest_points
+#def calculate_distance(points):
+    distances = []
+    for i in range (0,len(points)):
+        for j in range (i+1,len(points)):
+            dist = euclidean_distance(points[i],points[j])
+            distances.append((dist,points[i], points[j]))
+    return distances
 
-def distance_between_points(distances, point1, point2):
-    if (point1, point2) in distances:
-        return distances[(point1, point2)]
-    elif (point2, point1) in distances:
-        return distances[(point2, point1)]
+def calculate_distance_from_fixedpoint(embedding, fixed_embedding):
+    distances = []
+    for  fruit, embedding_value in embedding.items():
+        dist = euclidean_distance(fixed_embedding, embedding_value)
+        distances.append((dist, embedding_value, fruit))
+    return distances
+
+def nearest_fruits(distances):
+    distances.sort()
+
+    if (distances[0][0]  ==  0):
+        distances.pop(0)
+        for distance,embedding, fruit in distances [:3]:
+            print(distance)
+            print(embedding)
+            print(fruit)
+
     else:
-        return None 
-    
+        for distance,embedding, fruit in distances [:3]:
+            print(distance)
+            print(embedding)
+            print(fruit)
+
+        
                 
+
+
+
+
 def main():
-    points = dump_data_from_csv_file("graphpoints.csv")
-    distances = calculating_distance(points)
-    nearest_points = find_nearest_points(distances)
-    print("The nearest points are:", nearest_points)
+    embeddings = generate_embeddings(fruit_attributes, attributes)
+    print("Generated Embeddings DataFrame:")
+    print(embeddings)
+    
+    required_fruit = [1, 0, 0, 1, 0, 1] 
+    distances_for_fixed = calculate_distance_from_fixedpoint(embeddings, required_fruit)
+    print("\nDistances from the fixed embedding:")
+    for distance, embedding, fruit in distances_for_fixed:
+        print(f"Fruit: {fruit}")
+        print(f"Embedding: {embedding}")
+        print(f"Distance: {distance}")
+        print("")  
 
-    # Example usage of get_distance_between_points function
-    point1 = (1, 2)
-    point2 = (4, 6)
-    distance = distance_between_points(distances, point1, point2)
-    if distance is not None:
-        print(f"The distance between {point1} and {point2} is: {distance}")
+    found_fruits = finding_fruit(embeddings, required_fruit)
+    if found_fruits:
+        print(f"Fruits matching the required embedding {required_fruit}:")
+        for fruit in found_fruits:
+            print(fruit)
     else:
-        print(f"No distance found between {point1} and {point2}")
+        print(f"No fruit matches the required embedding.")
+        print("")
+    
+
+    nearest_fruits(distances_for_fixed)
+    
     
     
 
-if(__name__ == "__main__"):
+if __name__ == "__main__":
     main()
