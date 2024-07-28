@@ -9,8 +9,10 @@ def dump_data_from_csv(filename):
             if len(row) == 3:  
                 fruit_name = row[0]
                 colour = int(row[1])
+               # print (colour)
                 sweet = int(row[2])
                 data_dict[fruit_name] = {'Colour': colour, 'Sweet': sweet}
+                #print(data_dict)
             
     return data_dict
 
@@ -18,6 +20,7 @@ def dump_data_from_csv(filename):
 def nearest_fruits(data,given_fruit,attribute):
     if given_fruit in data:
         value = data[given_fruit][attribute]
+        print(value)
         print(f"The attribute value of {given_fruit} is: {value}")
         targeted_value = value + 1
         for fruit, attributes in data.items():
